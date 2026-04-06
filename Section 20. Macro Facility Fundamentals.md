@@ -196,9 +196,77 @@ run;
 <img width="931" height="1456" alt="image" src="https://github.com/user-attachments/assets/ca9b19e1-53be-4a28-853a-adf633ca96b8" />
 
 
+## 117. Creating a Macro Example 1 (greater flexibility, +useful for repetitive coding)
+
+```
+data houseprice;
+input type $ price tax;
+datalines;
+Single 300000 0.20
+Single 250000 0.25
+Duplex 175000 0.15
+;
+run;
+
+%macro somestats;
+proc means;
+var price tax;
+run;
+%mend;
+
+data housepricetwo;
+set houseprice;
+if type='Single';
+run;
+
+%somestats;
+```
+
+<img width="411" height="106" alt="image" src="https://github.com/user-attachments/assets/1c879152-001d-4a2a-b8c9-49d373b36de6" />
 
 
+### Positional Parameters
+```
+data houseprice;
+input type $ price tax;
+datalines;
+Single 300000 0.20
+Single 250000 0.25
+Duplex 175000 0.15
+;
+run;
+
+%macro newstats (prog, vars);
+proc &prog;
+var &vars;
+run;
+%mend;
+
+%newstats (means, price tax);
+```
+
+<img width="402" height="101" alt="image" src="https://github.com/user-attachments/assets/5ebdb336-a915-471b-b623-5f235bf3a7be" />
+
+```
+data houseprice;
+input type $ price tax;
+datalines;
+Single 300000 0.20
+Single 250000 0.25
+Duplex 175000 0.15
+;
+run;
+
+%macro newstats (prog, vars);
+proc &prog;
+var &vars;
+run;
+%mend;
+
+%newstats (univariate, price);
+```
+
+<img width="434" height="800" alt="image" src="https://github.com/user-attachments/assets/2bd37192-8b4a-4d41-92dd-03b6b86344e3" />
 
 
-
-
+## 118. Creating a Macro Example 2 (unique sales reports for different days)
