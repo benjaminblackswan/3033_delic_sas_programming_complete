@@ -270,3 +270,92 @@ run;
 
 
 ## 118. Creating a Macro Example 2 (unique sales reports for different days)
+```
+data sales;
+infile '/home/u62043935/Dedic/sales.txt';
+input unit_price;
+run;
+
+%macro daily_report;
+proc means data=sales sum;
+title "Daily Report";
+run;
+%mend;
+
+%macro wednesday_report;
+proc means data=sales sum min max std;
+var unit_price;
+Title "Wednesday sales report";
+run;
+%mend;
+
+%macro reportcondition;
+%daily_report;
+%if &sysday=Wednesday %Then %Wednesday_report;
+%mend;
+
+%reportcondition;
+```
+
+<img width="324" height="345" alt="image" src="https://github.com/user-attachments/assets/02db0ea0-0c46-40d4-8497-b2d0b9334628" />
+
+
+
+
+## 119. Creating a Macro Example 3 (calculating average sales for multiple years)
+```
+data yr2005;
+input name $ sales;
+datalines;
+Greg 10
+John 15
+Lisa 50
+Mark 20
+run;
+
+data yr2006;
+input name $ sales;
+datalines;
+Greg 15
+John 35
+Lisa 45
+Mark 34
+run;
+
+data yr2007;
+input name $ sales;
+datalines;
+Greg 67
+John 34
+Lisa 45
+Mark 23
+run;
+
+data yr2008;
+input name $ sales;
+datalines;
+Greg 54
+John 32
+Lisa 46
+Mark 57
+run;
+
+data yr2009;
+input name $ sales;
+datalines;
+Greg 77
+John 45
+Lisa 78
+Mark 87
+run;
+
+data yr2010;
+input name $ sales;
+datalines;
+Greg 99
+John 87
+Lisa 98
+Mark 104
+run;
+```
+
